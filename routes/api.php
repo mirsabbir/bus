@@ -13,6 +13,21 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('/cities', function(Request $request){
+    $res = \App\City::where('name','like','%'.$request->q.'%')->get();
+    return $res;
+});
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/seat/{bus}', function (Request $request,\App\Bus $bus) {
+    $seats = $bus->seats()->get();
+    $arr = [];
+    for($i=0;$i<count($seats);$i++){
+        $arr[$seats[$i]['seat_id']] = $seats[$i]['status'];
+    }
+    return $arr;
 });

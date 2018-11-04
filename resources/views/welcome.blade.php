@@ -1,98 +1,136 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+@extends('layouts.app')
+<script src="{{ asset('js/app.js') }}"></script>
+@section('content')
+<div style="margin-top:40px;">
+   <form style="display: flex;justify-content: center;" action="/find" >
+      <div class="row">
+         <span id="form" class="row">
+            <div class="col-auto">
+               <label>From </label>
+               <input @blur="k()" name="from" v-model="from" autocomplete="off" type="text" class="form-control" id="inlineFormInput" placeholder="Enter a city">
+               <div v-for="city in froms">
+                  <span v-text="city.name" @click="fill(city.name)" style="background-color:#206de5;color:white;:hover{cursor:pointer;}"></span>
+               </div>
             </div>
-        </div>
-    </body>
-</html>
+            <div class="col">
+               <label>To </label>
+               <input @blur="k()" name="to" v-model="to" autocomplete="off" type="text" class="form-control" id="inlineFormInput" placeholder="Enter a city">
+               <div v-for="city in tos">
+                  <span v-text="city.name" @click="fill2(city.name)" style="background-color:#206de5;color:white;:hover{cursor:pointer;}"></span>
+               </div>
+            </div>
+         </span>
+         <div class="col">
+            <label>Date of journey</label>
+            <!-- <div class="input-group">
+               <input name="up" autocomplete="off" id="date1" type="text" class="form-control" placeholder="Pick a date">
+               <span class="input-group-addon" style="margin-left:5px;"><i class="fas fa-calendar-check fa-2x"></i></span>
+            </div> -->
+            <span class="input-group">
+               <input name="up" autocomplete="off" id="date1" type="text" class="form-control" placeholder="Pick a date">
+               <i class="input-group-text fas fa-calendar-check"></i>
+            </span>
+         </div>
+         <div class="col">
+            <label>Date of return ( optional ) </label>
+            <!-- <div class="input-group">
+               <input name="down" autocomplete="off" id="date2" type="text" class="form-control" placeholder="Pick a date">
+               <span class="input-group-addon" style="margin-left:5px;"><i class="fas fa-calendar-check fa-2x"></i></span>
+            </div> -->
+            <div class="input-group">
+               <input name="down" autocomplete="off" id="date2" type="text" class="form-control" placeholder="Pick a date">
+               <i class="input-group-text fas fa-calendar-check"></i>
+            </div>
+         </div>
+         <div class="col ">
+            <button type="submit" class="btn btn-primary" style="margin-left: 10px;margin-top:29px;">Find Buses</button>
+         </div>
+      </div>
+   </form>
+</div>
+
+<div>
+    <img src="{{asset('images/bus.png')}}" alt="" class="rounded mx-auto d-block" style="margin:auto;">
+    <h4 class="text-center" style="color:#79829A">E-Ticketing</h4>
+</div>
+
+<script src="{{ asset('js/app.js') }}"></script>
+<script>
+   $('#date1').datepicker({
+       autoclose: true,
+       todayHighlight: true
+   });
+   $('#date2').datepicker({
+       autoclose: true,
+       todayHighlight: true
+   });
+   
+   const x = new Vue({
+       el:'#form',
+       data: {
+           from: '',
+           to: '',
+           froms: [],
+           tos: [],
+           fromset: false,
+           toset: false
+       },
+       watch:{
+           from: _.debounce(function(){
+               if(this.from.length>=2 && !x.fromset){
+                   
+                   axios.get('/api/cities?'+'q='+x.from)
+                   .then(function (response) {
+                       console.log(response.data);
+                       x.froms = response.data;
+                               
+                   })
+                   .catch(function (error) {
+                       console.log(error);
+                   });
+               }else {
+                   x.froms = [];
+               }
+               if(x.fromset){
+                   x.fromset = false;
+               }
+           },300),
+           to: _.debounce(function(){
+               if(this.to.length>=2 && !x.toset){
+                   axios.get('/api/cities?'+'q='+x.to)
+                   .then(function (response) {
+                       console.log(response.data);
+                       x.tos = response.data;
+                   })
+                   .catch(function (error) {
+                       console.log(error);
+                   });
+               } else {
+                   x.tos = [];
+               }
+               if(x.toset){
+                   x.toset = false;
+               }
+           },300)
+       },
+       methods:{
+           fill(r){
+               this.from = r;
+               this.froms = [];
+               this.fromset = true;
+           },
+           fill2(r){
+               this.to = r;
+               this.tos = [];
+               this.toset = true;
+           },
+           k: _.debounce(function(){
+               this.froms = [];
+               this.tos = [];
+           },300),
+       }
+   });
+   
+   
+</script>
+@endsection

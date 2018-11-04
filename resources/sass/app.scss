@@ -6,7 +6,20 @@
 @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+// Datepicker
+@import '~bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css';
+
+// fontawesome
+@import '~@fortawesome/fontawesome-free/css/all.css';
+
+// timepicker
+@import '~bootstrap-timepicker/css/bootstrap-timepicker.css';
+
+
+// seat chart
+@import '../a-seat-plan/jquery.seat-charts.css';
 
 .navbar-laravel {
   background-color: #fff;
