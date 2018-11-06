@@ -6,6 +6,16 @@
     <div class="card-header">
         Add bus under {{$transport->name}}
     </div>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul style="list-style-type: none;">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+    
    <form action="/bus/add" method="post" class="card-body">
       @csrf
       <input type="hidden" name="tid" id="" value="{{$transport->id}}">
@@ -55,8 +65,13 @@
          </div>
         <div class="col">
          <b>Fare per seat</b>
-         <input type="text" name="vara" class="form-control">
+         <input type="text" name="fare" class="form-control">
          </div>
+         <div class="col" >
+         <b>For how many days</b>
+         <input type="text" class="form-control" name="day">
+         </div>
+         
       </span>
       
       <button type="submit" class="btn btn-primary" style="margin-top:29px;">Add bus</button>

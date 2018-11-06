@@ -2,9 +2,34 @@
 @section('content')
 <script src="https://js.stripe.com/v3/"></script>
 <div class="container">
+  @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul style="list-style-type: none;">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
    <form action="/charge" method="post" id="payment-form" class="ml-auto mr-auto">
       <h3 class="text-center">Your payment details</h3>
-      pay {{session('taka')}} for {{session('no')}} seats
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <th scope="col">Seats</th>
+          <th scope="col">Per seat</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{session('no')}}</th>
+          <td>{{session('taka')/session('no')}}</td>
+          <td>{{session('taka')}}</td>
+        </tr>
+      </tbody>
+    </table>
+      <!-- /pay {{session('taka')}} for {{session('no')}} seats -->
       <div class="form-group">
          @csrf
          <label for="name">Name</label>

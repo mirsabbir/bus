@@ -38,3 +38,9 @@ Route::post('/checkout','CheckoutController@index');
 Route::get('/checkout','CheckoutController@checkout');
 Route::post('/charge','CheckoutController@charge');
 Route::get('/charge/complete','CheckoutController@complete');
+Route::get('/about', function(){
+    return view('about');
+});
+Route::get('/gallery', function(){
+    return view('gallery');
+});

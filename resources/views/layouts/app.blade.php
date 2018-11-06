@@ -96,16 +96,16 @@
                   <ul class="menu">
                      <span>Menu</span>    
                      <li>
-                        <a href="#">Home</a>
+                        <a href="/">Home</a>
                      </li>
                      <li>
-                        <a href="#">About</a>
+                        <a href="/about">About</a>
                      </li>
                      <li>
                         <a href="#">Blog</a>
                      </li>
                      <li>
-                        <a href="#">Gallery </a>
+                        <a href="/gallery">Gallery</a>
                      </li>
                   </ul>
                </div>
@@ -119,7 +119,7 @@
                         <i class="fa fa-map-marker" aria-hidden="true"></i> <a href="#">Adress</a>
                      </li>
                      <li>
-                        <i class="fa fa-envelope" aria-hidden="true"></i> <a href="#">Email</a>
+                        <i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:sxs@sn.com">Email</a>
                      </li>
                   </ul>
                </div>

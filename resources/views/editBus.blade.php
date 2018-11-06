@@ -6,7 +6,15 @@
 <div class="card-header">
         Edit Bus {{$bus->id}}
     </div>
-   
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul style="list-style-type: none;">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
    <form action="/bus/edit/{{$bus->id}}" method="post" class="card-body">
       @csrf
       <div class="row">
@@ -59,7 +67,7 @@
          </div>
          <div class="col">
             <b>Fare per seat</b>
-            <input type="text" name="vara" value="{{$bus->vara}}" class="form-control">
+            <input type="text" name="fare" value="{{$bus->vara}}" class="form-control">
          </div>
       </span>
       

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+<script src="{{ asset('js/app.js') }}" ></script>
 <div class="container">
     <div class="row">
       <div class="card text-center filterable ml-auto mr-auto">

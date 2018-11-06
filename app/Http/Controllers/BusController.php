@@ -30,29 +30,41 @@ class BusController extends Controller
             'details' => 'required',
             'from' => 'required',
             'to' => 'required',
-            'vara' => 'required'
+            'fare' => 'required'
         ]);
-        $bus = new \App\Bus;
-        $bus->go_at = date('Y-m-d',strtotime($request->date));
-        $bus->departure_at = $request->dep;
-        $bus->arrive_at = $request->arr;
-        $bus->details = $request->details;
-        $bus->transport_id = $request->tid;
-        $bus->from = $request->from;
-        $bus->to = $request->to;
-        $bus->vara = $request->vara;
-        \Auth::user()->buses()->save($bus);
         
-        for($i=1;$i<=9;$i++){
-            for($j=1;$j<=5;$j++){
-                if($i!=9 && $j==3) continue;
-                $st = $i.'_'.$j;
-                $seat = new \App\Seat;
-                $seat->status = 0;
-                $seat->seat_id = $st;
-                $bus->seats()->save($seat);
+        $datetime = date('Y-m-d',strtotime($request->date));
+        $datetime = new \DateTime($datetime);
+        for($k=0;$k<max((int)$request->day,1);$k++){
+            
+
+            $aj = $datetime->format('Y-m-d');
+            $bus = new \App\Bus;
+            $bus->go_at = date('Y-m-d',strtotime($aj));
+            $bus->departure_at = $request->dep;
+            $bus->arrive_at = $request->arr;
+            $bus->details = $request->details;
+            $bus->transport_id = $request->tid;
+            $bus->from = $request->from;
+            $bus->to = $request->to;
+            $bus->vara = $request->fare;
+            \Auth::user()->buses()->save($bus);
+            
+            for($i=1;$i<=9;$i++){
+                for($j=1;$j<=5;$j++){
+                    if($i!=9 && $j==3) continue;
+                    $st = $i.'_'.$j;
+                    $seat = new \App\Seat;
+                    $seat->status = 0;
+                    $seat->seat_id = $st;
+                    $bus->seats()->save($seat);
+                }
             }
+            $datetime = $datetime->modify('+1 day');
         }
+
+        
+        
 
         
 
@@ -77,7 +89,7 @@ class BusController extends Controller
                 'details' => 'required',
                 'from' => 'required',
                 'to' => 'required',
-                'vara' => 'required'
+                'fare' => 'required'
             ]);
             $bus->go_at = date('Y-m-d',strtotime($request->date));
             $bus->departure_at = $request->dep;
@@ -85,7 +97,7 @@ class BusController extends Controller
             $bus->details = $request->details;
             $bus->from = $request->from;
             $bus->to = $request->to;
-            $bus->vara = $request->vara;
+            $bus->vara = $request->fare;
             $bus->save();
             return redirect('/buses');
         } else abort(404);

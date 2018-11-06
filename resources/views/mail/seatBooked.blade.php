@@ -1,7 +1,4 @@
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
+<link rel="stylesheet" href="{{asset('css/app.css')}}">
 <style>
 
 .invoice-title h2, .invoice-title h3 {
@@ -21,51 +18,30 @@
 }
 </style>
 <div class="container">
-
-
-	
-         {{ $invoice->price   }}   
-		 {{$invoice->fare  }}
-            
-           {{ $invoice->seats}} 
-           {{ $invoice->name }}
-            {{$invoice->email}} 
-            {{$invoice->from }}
-            {{$invoice->to}} 
-            {{$invoice->departure}} 
-            {{$invoice->transport_name}} 
-
-			{{$seats[0]}}
+		
 
     <div class="row">
         <div class="col-xs-12">
     		<div class="invoice-title">
-    			<h2>Invoice</h2><h3 class="pull-right">Order # 54</h3>
+    			<h2>Invoice</h2><h3 class="pull-right">Order # {{ $invoice->id }}</h3>
     		</div>
     		<hr>
     		<div class="row">
     			<div class="col-xs-6">
     				<address>
-    				<strong>Billed To:</strong><br>
-    					John Smith<br>
-    					1234 Main<br>
-    					Apt. 4B<br>
-    					Springfield, ST 54321
+    				<strong>Billed To: </strong><br>
+    					{{ $invoice->name }}<br>
+    				<strong>E-mail: </strong><br>
+					    {{$invoice->email}}<br>
     				</address>
     			</div>
-    			<div class="col-xs-6 text-right">
-    				<address>
-    					<strong>Payment Method:</strong><br>
-    					Visa ending **** 4242<br>
-    					jsmith@email.com
-    				</address>
-    			</div>
+    			
     		</div>
     		<div class="row">
     			<div class="col-xs-6">
     				<address>
-    					<strong>Order Date:</strong><br>
-    					March 7, 2014<br><br>
+    					<strong>Order Date:{{ $invoice->created_at }}</strong><br>
+    					
     				</address>
     			</div>
     			
@@ -75,16 +51,21 @@
     
     <div class="row">
     	<div class="col-md-12">
-    		<div class="panel panel-default">
+			<h3>You have ordered seats of <strong>{{$invoice->transport_name}}</strong>
+			your trip from <strong>{{$invoice->from }}</strong> to <strong>{{$invoice->to}}</strong>
+			will start <strong>{{$invoice->departure}}</strong>
+			
+			 </h3>
+    		<div class="card text-center filterable ml-auto mr-auto">
     			<div class="panel-heading">
     				<h3 class="panel-title"><strong>Order summary</strong></h3>
     			</div>
-    			<div class="panel-body">
+    			<div class="panel-body text-center">
     				<div class="table-responsive">
     					<table class="table table-condensed">
     						<thead>
                                 <tr>
-        							<td><strong>Item</strong></td>
+        							<td><strong>Seat No.</strong></td>
         							<td class="text-center"><strong>Price</strong></td>
         							<td class="text-center"><strong>Quantity</strong></td>
         							<td class="text-right"><strong>Totals</strong></td>
@@ -92,41 +73,19 @@
     						</thead>
     						<tbody>
     							<!-- foreach ($order->lineItems as $line) or some such thing here -->
+								@for($i=0;$i<count($seats);$i++)
     							<tr>
-    								<td>BS-200</td>
-    								<td class="text-center">$10.99</td>
+    								<td>{{$seats[$i]}}</td>
+    								<td class="text-center">{{$invoice->fare  }}</td>
     								<td class="text-center">1</td>
-    								<td class="text-right">$10.99</td>
+    								<td class="text-right">{{$invoice->fare}}</td>
     							</tr>
-                                <tr>
-        							<td>BS-400</td>
-    								<td class="text-center">$20.00</td>
-    								<td class="text-center">3</td>
-    								<td class="text-right">$60.00</td>
-    							</tr>
-                                <tr>
-            						<td>BS-1000</td>
-    								<td class="text-center">$600.00</td>
-    								<td class="text-center">1</td>
-    								<td class="text-right">$600.00</td>
-    							</tr>
-    							<tr>
-    								<td class="thick-line"></td>
-    								<td class="thick-line"></td>
-    								<td class="thick-line text-center"><strong>Subtotal</strong></td>
-    								<td class="thick-line text-right">$670.99</td>
-    							</tr>
-    							<tr>
-    								<td class="no-line"></td>
-    								<td class="no-line"></td>
-    								<td class="no-line text-center"><strong>Shipping</strong></td>
-    								<td class="no-line text-right">$15</td>
-    							</tr>
+                                @endfor
     							<tr>
     								<td class="no-line"></td>
     								<td class="no-line"></td>
     								<td class="no-line text-center"><strong>Total</strong></td>
-    								<td class="no-line text-right">$685.99</td>
+    								<td class="no-line text-right">{{$invoice->fare*count($seats)  }}</td>
     							</tr>
     						</tbody>
     					</table>

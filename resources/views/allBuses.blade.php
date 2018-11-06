@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+<script src="{{ asset('js/app.js') }}" ></script>
 <div class="container">
    <div class="row">
       <div class="card text-center filterable  ml-auto mr-auto">
@@ -10,7 +11,7 @@
             </div>
             </h5>
          </div>
-         <table class="table table-striped ">
+         <table class="table table-striped">
             <thead class="table-primary">
                <tr class="filters">
                   <th><input type="text" class="form-control text-center" placeholder="#" disabled></th>
@@ -21,7 +22,7 @@
                   <th><input type="text" class="form-control text-center" placeholder="Details" disabled></th>
                   <th><input type="text" class="form-control text-center" placeholder="Trip date(Y-M-D)" disabled></th>
                   <th><input type="text" class="form-control text-center" placeholder="Departure time" disabled></th>
-                  <th><input type="text" class="form-control text-center" placeholder="Arrival time" disabled></th>
+                  <th><input type="text" class="form-control text-center" placeholder="Fare" disabled></th>
                   <th><input type="text" class="form-control text-center" placeholder="Seats" disabled></th>
                   <th><input type="text" class="form-control text-center" placeholder="Edit" disabled></th>
                   <th><input type="text" class="form-control text-center" placeholder="Delete" disabled></th>
@@ -39,7 +40,7 @@
                   <td>{{$bus->details}}</td>
                   <td>{{$bus->go_at}}</td>
                   <td>{{$bus->departure_at}}</td>
-                  <td>{{$bus->arrive_at}}</td>
+                  <td>{{$bus->vara}}</td>
                   <td><a href="/bus/{{$bus->id}}/seats">view seats</a></td>
                   <td><a href="/bus/edit/{{$bus->id}}">Edit</a></td>
                   <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">delete</button></td>
