@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
@@ -46,13 +47,20 @@ class CheckoutController extends Controller
 
         
         $token = $_POST['stripeToken'];
-        $charge = \Stripe\Charge::create([
+        try{
+             $charge = \Stripe\Charge::create([
             'amount' => session('taka'),
             'currency' => 'usd',
             'description' => 'Example charge',
             'source' => $token,
             'receipt_email' => $request->email,
         ]);
+        } catch(Exception $ex){
+            //dd(515);
+            session()->reflash();
+            return redirect('/charge/complete?payment='.'fail');
+        }
+       
         
         if($charge->outcome->seller_message=="Payment complete."){
             // update seats
@@ -86,8 +94,10 @@ class CheckoutController extends Controller
     if($request->payment=='success'){
         return view('success');
     }else {
+        session()->reflash();
         session()->flash('payment', 'failed');
-        return redirect()->back();
+
+        return redirect("/checkout");
     }
    }
 }

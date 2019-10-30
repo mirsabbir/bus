@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => 'eticketing06@gmail.com',
+        'address' => 'sabbir.e.ticketing@gmail.com',
         'name' => 'E-ticketing',
     ],
 

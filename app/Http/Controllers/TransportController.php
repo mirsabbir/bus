@@ -33,7 +33,7 @@ class TransportController extends Controller
 
     public function _dispatch(){
         if(\Auth::user()->admin==0) abort(404);
-        $transports = \Auth::user()->transports()->where('approved','0')->with('user')->paginate(25);
+        $transports = \App\Transport::where('approved','0')->with('user')->paginate(25);
         return view('dispatch')->with(['transports' => $transports]);
     }
     public function _dispatch_save(Request $request){

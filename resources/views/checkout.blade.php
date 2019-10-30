@@ -2,6 +2,11 @@
 @section('content')
 <script src="https://js.stripe.com/v3/"></script>
 <div class="container">
+  @if(session('payment')=='failed')
+  <div class="alert alert-danger" role="alert">
+  Payment is declined by your bank
+</div>
+  @endif
   @if ($errors->any())
     <div class="alert alert-danger">
         <ul style="list-style-type: none;">
