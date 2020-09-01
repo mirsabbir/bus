@@ -23,7 +23,7 @@
         "@fortawesome/fontawesome-free": "^5.3.1",
         "bootstrap-datepicker": "^1.8.0",
         "bootstrap-timepicker": "^0.5.2",
-        "buefy": "^0.6.7",
+        "buefy": "^0.7.2",
         "glyphicons": "^0.2.0"
     }
 }
